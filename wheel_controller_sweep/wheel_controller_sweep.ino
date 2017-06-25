@@ -17,7 +17,8 @@ volatile int steps_bwd = 0;
 #define SCOPE_PRE 2000  // Turn on scope prior to trial start, ms
 #define SCOPE_POST 2000 // Turn off scope after trial start
 #define CS_DURATION 6000 // ms
-#define CS_GRACE 2500 // ms
+#define CS_GRACE 2500 // Grace period, ms. US will be disabled during 
+                      //  the initial CS_GRACE ms of a CS presentation
 #define ITI_MIN 25000 // ms
 #define ITI_MAX 35000 // ms
 
@@ -100,7 +101,7 @@ void loop() {
         
         while (cs_elapsed_time < CS_DURATION) {
           digitalWrite(CS_OUT, enable_cs);
-          digitalWrite(US_OUT, (cs_elapsed_time > CS_GRACE) && enable_us);
+          digitalWrite(US_OUT, (cs_elapsed_time >= CS_GRACE) && enable_us);
           
           steps_fwd = 0;
           steps_bwd = 0;
