@@ -1,7 +1,7 @@
 clear all;
 
 %% Step 1: Load data
-source = '2017_06_15_p495_m487_activeAvoidance14.csv';
+source = 'm753_20170909_trials.csv';
 
 trial_start_times = find_edges(source, 4); % TRIAL is Ch4
 num_trials = length(trial_start_times);
