@@ -1,7 +1,7 @@
 clear all;
 
 %% Step 1: Load data
-source = 'm753_20170909_trials.csv';
+source = 'm756_20170913.csv';
 
 trial_start_times = find_edges(source, 4); % TRIAL is Ch4
 num_trials = length(trial_start_times);
@@ -42,10 +42,20 @@ V = gradient(P/cpr, dt); % [rotations/sec]
 
 %% Step 4: Plot the result
 close all;
+subplot(121);
 shadedErrorBar(t_offsets, mean(V,1), std(V,0,1)/sqrt(num_trials));
 xlim([t_offsets(1) t_offsets(end)]);
-xlabel('Time relative to trial start (s)');
-ylabel('Encoder velocity (rotations per second)');
+xlabel('Time relative to CS (s)');
+ylabel('Running velocity (rotations per second)');
 grid on;
-title(strrep(source, '_', '\_'));
 legend('Shaded area indicates s.e.m.', 'Location', 'NorthWest');
+
+subplot(122);
+imagesc(V,'XData',t_offsets,'YData',1:num_trials);
+xlabel('Time relative to CS (s)');
+set(gca,'YTick',1:num_trials);
+grid on;
+ylabel('Trial');
+colorbar;
+
+suptitle(strrep(source, '_', '\_'));
