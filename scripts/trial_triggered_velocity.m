@@ -1,14 +1,14 @@
-clear all;
+function trial_triggered_velocity(source)
 
-%% Step 1: Load data
-source = 'f761_20170913.csv';
+% Step 1: Load data
+% source = 'm756_20170915.csv';
 
 trials = find_trials(source, 4, 6); % Note: Ch4 is Trial, Ch6 is US
 num_trials = size(trials,1);
 
 counter = count_enc_position(source, 0, 1); % EncA and EncB are Ch0 and Ch1, respectively
 
-%% Step 2: Parse encoder position into a raster
+% Step 2: Parse encoder position into a raster
 t_offsets = -2:0.1:6; % Time relative to trial start [s]
 num_points = length(t_offsets);
 
@@ -19,9 +19,8 @@ for k = 1:num_trials
     P(k,:) = interp1(counter(:,1), counter(:,2), T(k,:), 'linear');
 end
 
-%% Step 2b (optional): Inspect quality of interpolation
-close all;
-
+% Step 2b (optional): Inspect quality of interpolation
+figure;
 plot(counter(:,1), counter(:,2), 'o');
 xlim([0 counter(end,1)]);
 xlabel('Time [s]');
@@ -35,13 +34,13 @@ for k = 1:num_trials
          'Color', 'r', 'VerticalAlignment', 'top');
 end
 
-%% Step 3: Compute the velocity
+% Step 3: Compute the velocity
 dt = t_offsets(2) - t_offsets(1);
 cpr = 500; % Encoder counts per rotation
 V = gradient(P/cpr, dt); % [rotations/sec]
 
-%% Step 4: Plot the result
-close all;
+% Step 4: Plot the result
+figure;
 subplot(3,1,1);
 shadedErrorBar(t_offsets, mean(V,1), std(V,0,1)/sqrt(num_trials));
 xlim([t_offsets(1) t_offsets(end)]);
