@@ -1,4 +1,4 @@
-function trial_triggered_velocity(source)
+function [V, t_offsets] = trial_triggered_velocity(source)
 
 % Step 1: Load data
 % source = 'm756_20170915.csv';
