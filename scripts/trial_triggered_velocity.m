@@ -1,10 +1,11 @@
-function [V, t_offsets] = trial_triggered_velocity(source)
+function [V, t_offsets, trial_correctness] = trial_triggered_velocity(source)
 
 % Step 1: Load data
 % source = 'm756_20170915.csv';
 
 trials = find_trials(source, 4, 6); % Note: Ch4 is Trial, Ch6 is US
-num_trials = size(trials,1);
+trial_correctness = trials(:,2);
+num_trials = size(trials,1)-1;
 
 counter = count_enc_position(source, 0, 1); % EncA and EncB are Ch0 and Ch1, respectively
 
@@ -54,7 +55,7 @@ subplot(3,1,[2 3]);
 imagesc(V,'XData',t_offsets,'YData',1:num_trials);
 corr_width = 0.5;
 for k = 1:num_trials
-    if trials(k,2)
+    if trial_correctness(k)
         corr_color = 'g'; % No US applied
     else
         corr_color = 'r'; % US applied
